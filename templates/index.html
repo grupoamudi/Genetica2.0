@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Amudi Genética</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        alert('hello');
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('connect', function() {
+            socket.emit('my event', {data: 'I\'m connected!'});
+        });
+    </script>
+</head>
+<body>
+    <h1>HELLO WORLD</h1>
+
+    <div id="graphs">
+    {#
+        {% for item in navigation %}
+            <div><a href="{{ item.href }}">{{ item.caption }}</a></div>
+        {% endfor %}
+    #}
+
+    GRAPHS!
+    </div>
+</body>
+</html>

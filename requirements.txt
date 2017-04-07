@@ -1,0 +1,3 @@
+pypng
+flask
+flask-socketio
