@@ -1,5 +1,6 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, send, emit, request
+from flask import Flask, render_template, request
+from flask_socketio import SocketIO, send, emit
+import numpy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'weoijhgsdlkjfwelkr20943091d98asokolfqeoi"!!?qw?sda/~dwqp1deo'
@@ -21,16 +22,22 @@ def handle_vote(json):
 
 @socketio.on('connect')
 def connected():
+    print("Client Connected")
     clients.append(request.namespace)
 
 @socketio.on('disconnect')
 def disconnected():
+    print("Client Disconnected")
     clients.remove(request.namespace)
 
 if __name__ == '__main__':
     import thread, time
+    import glob, os
+
     thread.start_new_thread(lambda: socketio.run(app))
 
     # Searches for individuals
+    for file in glob.glob("*.bin"):
+        print(file)
     # If not creates individuals
     # Start mutating at slow rate
