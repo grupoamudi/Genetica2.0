@@ -10,6 +10,7 @@ plot.ion()
 
 class individuo():
 
+    # Evolutionnary Parameters
     ind_size = 100;
     mutation_steps = 30;
     max_heads_size = 5;
@@ -61,9 +62,10 @@ class individuo():
                     raise "DirectionNotFound"
 
     #def cross_with(self, individuo_to_cross):
-     #   pass
+    #   pass
 
     def save_bin(self, file_path):
+        ''' No works '''
         try:
             # Opens the binary file
             bin_file = open(file_path, "wb")
@@ -84,6 +86,7 @@ class individuo():
             return False
 
     def save_png(self, file_path):
+        ''' Saves an individuo as png '''
 
         # Writes Array
         png_file = open(file_path, 'wb')
@@ -92,10 +95,37 @@ class individuo():
         w.write(png_file, d_matrix)
         png_file.close()
 
-        # Writes pontas
-        file_name = os.path.basename(file_path)
-        print(file_name)
+        # # Writes pontas
+        # file_name = os.path.splitext(file_path)
+        # new_name = file_name[0] + "-pontas"
+        #
+        # ponta_path = new_name + file_name[1]
+        # # Writes Array
+        # png_file = open(ponta_path, 'wb')
+        # d_matrix = self.value_matrix()
+        # w = png.Writer(len(d_matrix[0]), len(d_matrix), greyscale=True, bitdepth=1)
+        # w.write(png_file, d_matrix)
+        # png_file.close()
 
+    def load_png(self, file_path):
+        """ Loads an individuo data from a png file."""
+
+        png_reader = png.Reader(filename=file_path)
+        png_file = png_reader.read()
+
+        png_weight = png_file[0]
+        png_height = png_file[1]
+        png_pixels = png_file[2]
+
+        array_temp = []
+
+        for line in png_pixels:
+            temp_line = []
+            for item in line:
+                temp_line.append(celula(item))
+            array_temp.append(temp_line)
+
+        self.array = array_temp
 
     def value_matrix(self):
         # Builds Drawing matrix
