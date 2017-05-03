@@ -5,7 +5,7 @@
 Run the following command to get all dependencies
 
 ```
-pip -r requirements.txt
+pip install -r requirements.txt
 ```
 
 To start the server
