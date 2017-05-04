@@ -23,6 +23,7 @@ def handle_vote(json):
 @socketio.on('connect')
 def connected():
     print("Client Connected")
+    print()
     clients.append(request.namespace)
 
 @socketio.on('disconnect')
@@ -33,9 +34,9 @@ def disconnected():
 if __name__ == '__main__':
     import thread, time
     import glob, os
-
+    
     thread.start_new_thread(lambda: socketio.run(app))
-
+    
     # Searches for individuals
     for file in glob.glob("*.bin"):
         print(file)
