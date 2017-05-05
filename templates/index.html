@@ -9,6 +9,12 @@
         socket.on('connect', function() {
             socket.emit('my event', {data: 'I\'m connected!'});
         });
+
+        socket.on('update_vote_number', function(recieved_data) {
+            $.each(recieved_data, function(i, item) {
+                $("#vote_number-"+(i)).text(item);
+            })
+        });
     </script>
 </head>
 <body>
@@ -26,14 +32,32 @@
     <div style="text-align:center" id="votos">
     <h2>Gráficos</h2>
     <table align="center" border = "1">
-    <tr><td>indivíduo 1</td><td>indivíduo 2</td><td>indivíduo 3</td><td>indivíduo 4</td></tr>
-    <tr><td>indivíduo 1 - gráfico</td><td>indivíduo 2 - gráfico </td><td>indivíduo 3 - gráfico</td><td>indivíduo 4 - gráfico</td></tr>
+
+    <tr>
+        <td>indivíduo 1</td>
+        <td>indivíduo 2</td>
+        <td>indivíduo 3</td>
+        <td>indivíduo 4</td>
+    </tr>
+    <tr>
+        <td>indivíduo 1 - gráfico</td>
+        <td>indivíduo 2 - gráfico </td>
+        <td>indivíduo 3 - gráfico</td>
+        <td>indivíduo 4 - gráfico</td>
+    </tr>
     <tr>
         <td><button id="1" class="vote">Vote 1</button></td>
         <td><button id="2" class="vote">Vote 2</button></td>
         <td><button id="3" class="vote">Vote 3</button></td>
         <td><button id="4"  class="vote">Vote 4</button></td>
     </tr>
+    <tr>
+        <td id="vote_number-1">0</td>
+        <td id="vote_number-2">0</td>
+        <td id="vote_number-3">0</td>
+        <td id="vote_number-4">0</td>
+    </tr>
+
     </div>
     </table>
     <script>
