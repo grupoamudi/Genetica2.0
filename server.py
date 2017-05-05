@@ -19,6 +19,10 @@ def init_program():
 @socketio.on('vote')
 def handle_vote(json):
     print('recieved vote ' + str(json))
+    # Adicionar voto a um dicionário global
+    # Enviar dicionário global (emit: vote_broadcast) para todos os interessados via broadcast = true
+    # Verificar se há necessidade de atualizar as imagens
+    # Verificar se está na hora de cruzar
 
 @socketio.on('connect')
 def connected():
