@@ -23,19 +23,19 @@
 
     GRAPHS!
     </div>
-    <div id="votos">
+    <div style="text-align:center" id="votos">
     <h2>Gráficos</h2>
-    <table border = "1">
+    <table align="center" border = "1">
     <tr><td>indivíduo 1</td><td>indivíduo 2</td><td>indivíduo 3</td><td>indivíduo 4</td></tr>
     <tr><td>indivíduo 1 - gráfico</td><td>indivíduo 2 - gráfico </td><td>indivíduo 3 - gráfico</td><td>indivíduo 4 - gráfico</td></tr>
     <tr><td><button onclick="funcaovoto(1)">Vote 1</button></td><td><button onclick="funcaovoto(2)">Vote 2</button></td><td><button onclick="funcaovoto(3)">Vote 3</button></td><td><button onclick="funcaovoto(4)">Vote 4</button></td></tr>
     </div>
     </table>
     <script>
-	function funcaovoto(a){
-		window.alert("the form was submitted", a);
-    socket.emmit(a)
-}</script>
+	  function funcaovoto(a){
+		window.alert(a);
+    socket.emmit('vote',{a})
+    }</script>
 
 </body>
 </html>

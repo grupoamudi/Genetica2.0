@@ -18,12 +18,13 @@ def init_program():
 
 @socketio.on('vote')
 def handle_vote(json):
+    print("aaa")
+    console.log('recieved vote')
     pass
 
 @socketio.on('connect')
 def connected():
     print("Client Connected")
-    print()
     clients.append(request.namespace)
 
 @socketio.on('disconnect')
