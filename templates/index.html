@@ -3,8 +3,8 @@
 <head>
     <title>Amudi Genética</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8">
-        alert('hello');
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         socket.on('connect', function() {
             socket.emit('my event', {data: 'I\'m connected!'});
@@ -28,13 +28,24 @@
     <table align="center" border = "1">
     <tr><td>indivíduo 1</td><td>indivíduo 2</td><td>indivíduo 3</td><td>indivíduo 4</td></tr>
     <tr><td>indivíduo 1 - gráfico</td><td>indivíduo 2 - gráfico </td><td>indivíduo 3 - gráfico</td><td>indivíduo 4 - gráfico</td></tr>
-    <tr><td><button onclick="funcaovoto(1)">Vote 1</button></td><td><button onclick="funcaovoto(2)">Vote 2</button></td><td><button onclick="funcaovoto(3)">Vote 3</button></td><td><button onclick="funcaovoto(4)">Vote 4</button></td></tr>
+    <tr>
+        <td><button id="1" class="vote">Vote 1</button></td>
+        <td><button id="2" class="vote">Vote 2</button></td>
+        <td><button id="3" class="vote">Vote 3</button></td>
+        <td><button id="4"  class="vote">Vote 4</button></td>
+    </tr>
     </div>
     </table>
     <script>
-	  function funcaovoto(a){
-		window.alert(a);
-    socket.emmit('vote',{a})
+    $(document).ready( function () {
+        $('.vote').click(function () {
+            funcaovoto($(this).attr('id'));
+        })
+
+    })
+
+	function funcaovoto(a){
+         socket.emit('vote',{'chosen_candidate': a})
     }</script>
 
 </body>
