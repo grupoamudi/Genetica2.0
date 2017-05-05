@@ -7,6 +7,11 @@ app.config['SECRET_KEY'] = 'weoijhgsdlkjfwelkr20943091d98asokolfqeoi"!!?qw?sda/~
 socketio = SocketIO(app)
 
 clients = []
+votes1 = 0
+votes2 = 0
+votes3 = 0
+votes4 = 0
+winner = 0
 
 @app.route('/')
 def index():
@@ -19,10 +24,18 @@ def init_program():
 @socketio.on('vote')
 def handle_vote(json):
     print('recieved vote ' + str(json))
+    vote = int((json['chosen_candidate']))
+    if vote == 1:
+        votes1 += 1
+        print(votes1)
     # Adicionar voto a um dicionário global
     # Enviar dicionário global (emit: vote_broadcast) para todos os interessados via broadcast = true
     # Verificar se há necessidade de atualizar as imagens
     # Verificar se está na hora de cruzar
+
+@socketio.on('broadcast_votes')
+def broadcast_votes():
+    pass
 
 @socketio.on('connect')
 def connected():
