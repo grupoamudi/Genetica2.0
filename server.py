@@ -8,6 +8,8 @@ socketio = SocketIO(app)
 
 clients = []
 individuos = ["1", "2", "3", "4"]  # TODO: Fix
+count_votes = [0]
+
 # Init vote_stash
 vote_stash = {};
 for i,individuo in enumerate(individuos):
@@ -29,6 +31,9 @@ def handle_vote(json):
     print('recieved vote ' + str(json))
 
     vote = int((json['chosen_candidate']))
+
+    count_votes[0] = count_votes[0] + 1
+    print (count_votes)
 
     if 1 <= vote <= len(individuos):
         vote_stash[vote] = vote_stash[vote] + 1
