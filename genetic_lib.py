@@ -127,6 +127,8 @@ class individuo():
 
         self.array = array_temp
 
+
+    
     def value_matrix(self):
         # Builds Drawing matrix
         drawing_matrix = []
@@ -254,8 +256,22 @@ def limpamatriz(array):
             pontoy += 1
         pontox += 1
 
-def printamatriz (array):
-    for i in range(len(array)):
-        linha = []
-        for j in range (len (array[i])):
-            linha += [array[i][j].valor]
+def printamatriz (cells_list):
+    for i in range(len(cells_list)):
+        for j in range(len(cells_list[i].array)):
+            linha=[]
+            for k in range(len(cells_list[i].array[j])):
+                #print(cells_list[i].array[j][k].valor)
+                linha += [cells_list[i].array[j][k].valor]
+            print (linha)
+
+
+def main():
+    nb_cells = int(input("digite o numero de individuos "))
+    cells_list = []
+
+    while nb_cells != 0:
+        cells_list += [individuo()]
+        nb_cells -= 1
+    
+

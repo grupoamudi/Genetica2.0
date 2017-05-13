@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from flask_socketio import SocketIO, send, emit
 import numpy
 
@@ -19,6 +19,7 @@ print(vote_stash)
 @app.route('/')
 def index():
     return render_template('index.html')
+#TODO: Static serving images for index.html
 
 @app.before_first_request
 def init_program():
