@@ -3,22 +3,23 @@ import genetic_lib as lib
 def main():
 
     teste = True
-    
+
     if teste == True:
         nb_cells = 4
     else:
         nb_cells = int(input("digite o numero de individuos "))
-    
+
     individuo_list = []
 
     while nb_cells != 0:
-        inviduo_list += [lib.individuo()]
+        individuo_list += [lib.individuo()]
         nb_cells -= 1
 
-    for i in range(len(indviduo_list)):
+    for i in range(len(individuo_list)):
         for j in range(10):
-            cells_list[i].mutate()
-        cells_list[i].save_png("%s.png" %i)        
+            print (i)
+            individuo_list[i].mutate()
+        individuo_list[i].save_png("static/%s.png" %i)
 
     #A.array = []
 
