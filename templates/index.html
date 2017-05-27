@@ -15,6 +15,9 @@
                 $("#vote_number-"+(i)).text(item);
             })
         });
+        socket.on('reload', function (data) {
+            location.reload();
+        });
     </script>
 </head>
 <body>
