@@ -11,8 +11,8 @@ plot.ion()
 class individuo():
 
     # Evolutionnary Parameters
-    ind_size = 100;
-    mutation_steps = 30;
+    ind_size = 250;
+    mutation_steps = 50;
     max_heads_size = 5;
     direction_map_x = {'baixo': 1, 'cima': -1}
     direction_map_y = {'esquerda': -1, 'direita': 1}
@@ -52,10 +52,14 @@ class individuo():
                 #print(x_test)
                 if x_test:
                     x_move = cadaponta.valorx + x_test if (cadaponta.valorx + x_test) < len(self.array) else 0
+                    if x_move == -self.ind_size -1:
+                        x_move = 0
                     self.array[x_move][cadaponta.valory].mudavalor();
                     cadaponta.valorx = x_move
                 elif y_test:
                     y_move = cadaponta.valory + y_test if (cadaponta.valory + y_test) < len(self.array) else 0
+                    if y_move == -self.ind_size -1:
+                        y_move = 0
                     self.array[cadaponta.valorx][y_move].mudavalor();
                     cadaponta.valory = y_move
                 else:
@@ -128,7 +132,7 @@ class individuo():
         self.array = array_temp
 
 
-    
+
     def value_matrix(self):
         # Builds Drawing matrix
         drawing_matrix = []
@@ -273,5 +277,3 @@ def main():
     while nb_cells != 0:
         cells_list += [individuo()]
         nb_cells -= 1
-    
-

@@ -63,13 +63,24 @@
 	function funcaovoto(a){
          socket.emit('vote',{'chosen_candidate': a})
     }</script>
+
+    <p><button id="restarter" class="restarter"> Aperte para reiniciar</button></p>
+    <script>
+    $(document).ready(function(){
+      $('.restarter').click(function(){
+            funcaoreinicia();
+      })
+    })
+    function funcaoreinicia(){
+      socket.emit('restarter')
+    }</script>
     <div style="text-align:center" id="couter">
       <style>
       .borda{width:30px; height:30px;
              padding:5px; border:4px solid black;
            }
       </style>
-    <h3 align="left">Votos computados</h3>
+    <h4 align="left">Votos computados</h3>
     <p class=borda id="vote_counter">0</p>
   </div>
 
