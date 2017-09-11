@@ -15,7 +15,7 @@
                 $("#vote_number-"+(i)).text(item);
             })
         });
-        socket.on('reload', function (data) {
+        socket.on('reload', function () {
             location.reload();
         });
     </script>
@@ -25,7 +25,6 @@
     <div style="text-align:center" id="votos">
     <h2>Gráficos</h2>
     <table align="center" border = "1">
-
     <tr>
         <td>indivíduo 1</td>
         <td>indivíduo 2</td>
@@ -63,7 +62,7 @@
 	function funcaovoto(a){
          socket.emit('vote',{'chosen_candidate': a})
     }</script>
-
+    <div>
     <p><button id="restarter" class="restarter"> Aperte para reiniciar</button></p>
     <script>
     $(document).ready(function(){
@@ -74,6 +73,7 @@
     function funcaoreinicia(){
       socket.emit('restarter')
     }</script>
+  </div>
     <div style="text-align:center" id="couter">
       <style>
       .borda{width:30px; height:30px;

@@ -2,6 +2,59 @@ import genetic_lib as lib
 
 once = True
 
+
+def crosser(vote_stash, individuo_list):
+    new_individuolist = []
+    ########   Gera as chances de mutação     #############
+    vote_list = []
+    chance_list = []
+    total = 0
+    semvoto = 0
+    # obtém de vote_stash os votos e cria uma vote_list utilizável #
+    for i in vote_stash:
+        vote_list += [vote_stash[i]]
+    # determina se houve votos válidos #
+    for i in range(len(vote_list)):
+        if vote_list[i] != 0 :
+            semvoto = 1
+    # se não houve votos #
+    if semvoto == 0:
+        total = len(vote_list)
+        for i in range(len(vote_list)):
+            vote_list[i]=1
+            print ('vote_list' , vote_list)
+        for i in range(len(vote_list)):
+            chance_list += [(vote_list[i]/len(vote_list))*100]
+    # se houve votos #
+    else:
+        for i in range(len(vote_list)):
+            total += vote_list[i]
+        for i in range(len(vote_list)):
+            chance_list += [(vote_list[i]/total)*100]
+    print ('chance_list : ',chance_list)
+    #########   Método de mutação    ##########################
+
+    return individuo_list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#not used anymore
 def main_testepng(individuo,winner):
     new_individuolist = []
     individuo_to_copy = []
@@ -23,3 +76,32 @@ def main_testepng(individuo,winner):
         individuo[i].save_png("static/%s.png" %i)
         new_individuolist += [individuo[i]]
     return new_individuolist
+
+#not used anymore
+def old_crossing_over():
+    total_votes = 0
+    highest_voted = 0
+    winner = 0
+    global nb_counter
+    #Checks if number of votes > 0
+    for i in vote_stash:
+        total_votes += vote_stash[i]
+    if total_votes == 0:
+        winner = random.randint(0,nb_counter-1)
+    #Get voted list
+    else:
+        for j in vote_stash:
+            if vote_stash[j] > highest_voted :
+                highest_voted = vote_stash[j]
+                winner = int(j)-1
+            vote_stash[j] = 0
+    global individuo_list
+    print()
+    print ('winner:' , winner)
+    #updates figures with new ones
+    individuo_list = test_png.main_testepng(individuo_list, winner)
+
+    socketio.emit('update_vote_number', vote_stash, broadcast = True)
+    socketio.emit('reload', {})
+    print()
+    return

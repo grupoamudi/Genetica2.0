@@ -11,7 +11,7 @@ app.config['SECRET_KEY'] = 'weoijhgsdlkjfwelkr20943091d98asokolfqeoi"!!?qw?sda/~
 socketio = SocketIO(app)
 
 clients = []
-#individuos = ["1", "2", "3", "4"]  # TODO: Fix
+#individuos = ["1", "2", "3", "4"]
 nb_individuos = 4
 nb_counter = nb_individuos
 individuo_list = []
@@ -29,38 +29,13 @@ print(vote_stash)
 
 @app.before_first_request
 def init_program():
-
     #repeated function
     def crossing_over():
-        total_votes = 0
-        highest_voted = 0
-        winner = 0
-        global nb_counter
-        #Checks if number of votes > 0
-        for i in vote_stash:
-            total_votes += vote_stash[i]
-        if total_votes == 0:
-            winner = random.randint(0,nb_counter-1)
-        #Search for the highest voted
-        else:
-            for j in vote_stash:
-                if vote_stash[j] > highest_voted :
-                    highest_voted = vote_stash[j]
-                    winner = int(j)-1
-                vote_stash[j] = 0
         global individuo_list
-        print()
-        print ('winner:' , winner)
-        #updates figures with new ones
-        individuo_list = test_png.main_testepng(individuo_list, winner)
-
-        socketio.emit('update_vote_number', vote_stash, broadcast = True)
-        socketio.emit('reload', {})
-        print()
-        return
+        individuo_list = test_png.crosser(vote_stash,individuo_list)
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(crossing_over, 'interval', seconds = 1)
+    scheduler.add_job(crossing_over, 'interval', seconds = 3)
     scheduler.start()
     pass
 
@@ -77,13 +52,9 @@ def handle_vote(json):
     print('recieved vote ' + str(json))
 
     vote = int((json['chosen_candidate']))
-
     count_votes[0] = count_votes[0] + 1
-    #print (count_votes)
-
     if 1 <= vote <= len(individuo_list):
         vote_stash[vote] = vote_stash[vote] + 1
-
     emit('update_vote_number', vote_stash, broadcast=True)
 
 @socketio.on('connect')
@@ -113,6 +84,7 @@ def handle_restarter():
     print ("button reinitialize pressed")
     print()
     print()
+    emit('reload', broadcast=True)
     pass
 
 if __name__ == '__main__':
