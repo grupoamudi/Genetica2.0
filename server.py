@@ -53,8 +53,7 @@ def handle_vote(json):
 
     vote = int((json['chosen_candidate']))
     count_votes[0] = count_votes[0] + 1
-    if 1 <= vote <= len(individuo_list):
-        vote_stash[vote] = vote_stash[vote] + 1
+    vote_stash[vote] = vote_stash[vote] + 1
     emit('update_vote_number', vote_stash, broadcast=True)
 
 @socketio.on('connect')

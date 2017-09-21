@@ -1,5 +1,6 @@
 import genetic_lib as lib
 
+
 once = True
 
 
@@ -10,6 +11,8 @@ def crosser(vote_stash, individuo_list):
     chance_list = []
     total = 0
     semvoto = 0
+    soma = 0
+    real_chance_list = []
     # obtém de vote_stash os votos e cria uma vote_list utilizável #
     for i in vote_stash:
         vote_list += [vote_stash[i]]
@@ -32,12 +35,77 @@ def crosser(vote_stash, individuo_list):
         for i in range(len(vote_list)):
             chance_list += [(vote_list[i]/total)*100]
     print ('chance_list : ',chance_list)
-    #########   Método de mutação    ##########################
+
+    #######    The real chance_list #########################
+    for i in range(len(chance_list)):
+        soma += chance_list[i]
+        real_chance_list += [soma]
+    soma = 0
+    print ('real_chance_list : ', real_chance_list)
+
+    #######    Eleição do que fazer #########################
+    lista_do_que_fazer = []
+    for i in range (len (individuo_list)):
+        lib.random.seed()
+        cte_escolhe_o_que_vai_acontecer = lib.random.randint(0,100)
+        if cte_escolhe_o_que_vai_acontecer <= 10 :
+            lista_do_que_fazer += ['extincao']
+        else:
+            if cte_escolhe_o_que_vai_acontecer <= 20 :
+                lista_do_que_fazer += ['mutar_sozinho']
+            else:
+                if cte_escolhe_o_que_vai_acontecer <= 100 :
+                    lista_do_que_fazer += ['cruzar']
+    print ('lista do que fazer : ',lista_do_que_fazer)
+
+    #######     Fazer o que foi eleito ###########################
+
+    for i in lista_do_que_fazer:
+        if i == 'extincao':
+            ''' cria um indivíduo novo do 0 '''
+            new_individuolist += [lib.individuo()]
+            # o indivíduo é extinto depois de cruzar #
+#        if i == 'mutar_sozinho':
+            ''' faz o indivíduo mutar sozinho'''
+
+        if i == 'cruzar':
+            chosen = []
+            ##########   até a lista ser menor que 2, adicionar indivíduos para cruzar  #######
+            while len(chosen) < 2:
+                for i in range (len(chance_list)):
+                    chance_possibility = lib.random.randint(0,100)
+                    if chance_possibility <= chance_list[i]:
+                        chosen += [i]
+            print ('chosen list : ', chosen )
+            print (len(chosen))
+            hold_chosen =[]
+            #######    se a lista de escolhidos para cruzar é maior que 2, escolher aleatóriamente 2 ########
+            if len(chosen) > 2:
+                while len(hold_chosen) != 2 :
+                    choose_one = lib.random.randint(0,len(chosen)-1)
+                    print ('choose_one : ', choose_one)
+                    hold_chosen += [chosen[choose_one]]
+                chosen = hold_chosen
+                print ('chosen list : ', chosen )
+
+
 
     return individuo_list
 
 
 
+
+
+
+def mutation_method (individuo_list):
+    print ()
+    for i in range(len(individuo_list)):
+        for j in range(len(individuo_list[i].array)):
+            for k in range(len(individuo_list[i].array[j])):
+                ####### foi acessado o valor de cada célula de cada individuo #########
+                print (individuo_list[i].array[j][k].valor)
+
+    return individuo_list
 
 
 
