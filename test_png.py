@@ -17,35 +17,35 @@ def crosser(vote_stash, individuo_list):
     for i in vote_stash:
         vote_list += [vote_stash[i]]
     # determina se houve votos válidos #
-    for i in range(len(vote_list)):
-        if vote_list[i] != 0 :
+    for i, vote_list_element in enumerate (vote_list):
+        if vote_list_element != 0:
             semvoto = 1
+#
+#    for i in range(len(vote_list)):
+#        if vote_list[i] != 0 :
+#            semvoto = 1
+
     # se não houve votos #
     if semvoto == 0:
         total = len(vote_list)
-        for i in range(len(vote_list)):
-            vote_list[i]=1
-            print ('vote_list' , vote_list)
-        for i in range(len(vote_list)):
-            chance_list += [(vote_list[i]/len(vote_list))*100]
+        for i, vote_list_element in enumerate (vote_list):
+#        for i in range(len(vote_list)):
+            vote_list[i] = 1
+            print ('vote_list', vote_list)
+        for i, vote_list_element in enumerate (vote_list):
+#        for i in range(len(vote_list)):
+            chance_list += [(vote_list[i]/total)*100]
     # se houve votos #
     else:
-        for i in range(len(vote_list)):
+        for i, vote_list_element in enumerate (vote_list):
             total += vote_list[i]
-        for i in range(len(vote_list)):
+        for i, vote_list_element in enumerate (vote_list):
             chance_list += [(vote_list[i]/total)*100]
     print ('chance_list : ',chance_list)
 
-    #######    The real chance_list #########################
-    for i in range(len(chance_list)):
-        soma += chance_list[i]
-        real_chance_list += [soma]
-    soma = 0
-    print ('real_chance_list : ', real_chance_list)
-
     #######    Eleição do que fazer #########################
     lista_do_que_fazer = []
-    for i in range (len (individuo_list)):
+    for todo_individuo, individuo_list_element in enumerate (individuo_list):
         lib.random.seed()
         cte_escolhe_o_que_vai_acontecer = lib.random.randint(0,100)
         if cte_escolhe_o_que_vai_acontecer <= 10 :
@@ -60,37 +60,37 @@ def crosser(vote_stash, individuo_list):
 
     #######     Fazer o que foi eleito ###########################
 
-    for i in lista_do_que_fazer:
-        if i == 'extincao':
+    for acao_a_executar in lista_do_que_fazer:
+        if acao_a_executar == 'extincao':
             ''' cria um indivíduo novo do 0 '''
             new_individuolist += [lib.individuo()]
             # o indivíduo é extinto depois de cruzar #
-#        if i == 'mutar_sozinho':
+#        if acao_a_executar == 'mutar_sozinho':
             ''' faz o indivíduo mutar sozinho'''
 
-        if i == 'cruzar':
+        if acao_a_executar == 'cruzar':
             chosen = []
-            ##########   até a lista ser menor que 2, adicionar indivíduos para cruzar  #######
+            pare = 0
+            ##########   dependendo da porcentagem da chance_list, ele gera números aleatórios e se for maior ele adiciona como escolhido   #####
             while len(chosen) < 2:
-                for i in range (len(chance_list)):
+                for i, chance_list_element in enumerate (chance_list):
                     chance_possibility = lib.random.randint(0,100)
-                    if chance_possibility <= chance_list[i]:
+                    if chance_possibility < chance_list_element and pare == 0:
                         chosen += [i]
-            print ('chosen list : ', chosen )
-            print (len(chosen))
-            hold_chosen =[]
-            #######    se a lista de escolhidos para cruzar é maior que 2, escolher aleatóriamente 2 ########
-            if len(chosen) > 2:
-                while len(hold_chosen) != 2 :
-                    choose_one = lib.random.randint(0,len(chosen)-1)
-                    print ('choose_one : ', choose_one)
-                    hold_chosen += [chosen[choose_one]]
-                chosen = hold_chosen
-                print ('chosen list : ', chosen )
-
-
+                        if len(chosen) == 2:
+                            pare = 1
+            print ('chosen list : ', chosen)
+            ###########   o cruzamento ############################
+            for escolhido_in_chosen in chosen:
+                for individuo_element_number,individuo_element in enumerate (individuo_list):
+                    if escolhido_in_chosen == individuo_element_number:
+                        for i,linha_individuo in enumerate (individuo_list[individuo_element_number].array):
+                            for j, coluna_individuo in enumerate (individuo_list[individuo_element_number].array[i]):
+                                print (coluna_individuo.value)
+                    #print ('individuo_list : ', escolhido_in_chosen)
 
     return individuo_list
+
 
 
 
