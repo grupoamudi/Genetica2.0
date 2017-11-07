@@ -48,10 +48,10 @@ def crosser(vote_stash, individuo_list):
     for todo_individuo, individuo_list_element in enumerate (individuo_list):
         lib.random.seed()
         cte_escolhe_o_que_vai_acontecer = lib.random.randint(0,100)
-        if cte_escolhe_o_que_vai_acontecer <= 10 :
+        if cte_escolhe_o_que_vai_acontecer <= 1 :
             lista_do_que_fazer += ['extincao']
         else:
-            if cte_escolhe_o_que_vai_acontecer <= 20 :
+            if cte_escolhe_o_que_vai_acontecer <= 95 :
                 lista_do_que_fazer += ['mutar_sozinho']
             else:
                 if cte_escolhe_o_que_vai_acontecer <= 100 :
@@ -60,13 +60,37 @@ def crosser(vote_stash, individuo_list):
 
     #######     Fazer o que foi eleito ###########################
 
-    for acao_a_executar in lista_do_que_fazer:
+    for numero_individuo, acao_a_executar in enumerate(lista_do_que_fazer):
         if acao_a_executar == 'extincao':
             ''' cria um indivíduo novo do 0 '''
             new_individuolist += [lib.individuo()]
             # o indivíduo é extinto depois de cruzar #
-#        if acao_a_executar == 'mutar_sozinho':
+
+
+        if acao_a_executar == 'mutar_sozinho':
             ''' faz o indivíduo mutar sozinho'''
+
+            individuo_list[numero_individuo].mutate()
+            mutated_individuo = individuo_list[numero_individuo]
+            for each_line_number , each_line in enumerate (mutated_individuo.array):
+                for each_cell_number , each_cell in enumerate (mutated_individuo.array[each_line_number]):
+                      each_cell.valor = int(each_cell.valor)
+
+            #      erro de conversão de booleanos     #
+            #individuo_list[numero_individuo].array = individuo_list[numero_individuo].array * 1
+
+            new_individuolist += [mutated_individuo]
+
+            ##########  verificacao manual por console ###########################
+            Verifica_mutar_sozinho_console = False
+            if Verifica_mutar_sozinho_console:
+                lista = []
+                for each_line_number , each_line in enumerate (mutated_individuo.array):
+                    for each_cell_number, each_cell in enumerate (mutated_individuo.array[each_line_number]):
+                        lista += [each_cell.valor]
+                    print (lista)
+                    lista = []
+                print ()
 
         if acao_a_executar == 'cruzar':
             chosen = []
@@ -80,16 +104,66 @@ def crosser(vote_stash, individuo_list):
                         if len(chosen) == 2:
                             pare = 1
             print ('chosen list : ', chosen)
-            ###########   o cruzamento ############################
-            for escolhido_in_chosen in chosen:
-                for individuo_element_number,individuo_element in enumerate (individuo_list):
-                    if escolhido_in_chosen == individuo_element_number:
-                        for i,linha_individuo in enumerate (individuo_list[individuo_element_number].array):
-                            for j, coluna_individuo in enumerate (individuo_list[individuo_element_number].array[i]):
-                                print (coluna_individuo.value)
-                    #print ('individuo_list : ', escolhido_in_chosen)
+                ################################   o cruzamento ############################
 
-    return individuo_list
+            ###########   criacao do individuo resultante (filho) ###################
+
+            filho = lib.individuo()
+
+            ###########   probabilidade de passagem de genes   #####################
+
+            #probabilidade_crossing_pai = 50
+            #probabilidade_corssing_mae = 50
+
+            chosen_number_0 = chosen[0]
+            chosen_number_1 = chosen[1]
+
+            ###########   mecanismo de juncao entre os pais (cruzamento) ###########################
+            lista = []
+            for line_number,each_line in enumerate (filho.array):
+
+                chance_possibility_crossing = lib.random.randint(0,100)
+                if chance_possibility_crossing < 50 : #pega fileira de gene do pais
+                    for cell_number_son, each_cell_son in enumerate (filho.array[line_number]):
+                        for cell_number_parent, each_cell_parent in enumerate (individuo_list[chosen_number_0].array[line_number]):
+                            if cell_number_son == cell_number_parent:
+                                #print ('each_cell_parent : ', each_cell_parent.valor)
+                                filho.array[line_number][cell_number_son].valor = each_cell_parent.valor
+                                #print ('copied 0')
+                    filho.array = filho.array * 1
+                elif chance_possibility_crossing < 100 : #pega fileira de gene do pais
+                    for cell_number_son, each_cell_son in enumerate (filho.array[line_number]):
+                        for cell_number_parent, each_cell_parent in enumerate (individuo_list[chosen_number_1].array[line_number]):
+                            if cell_number_son == cell_number_parent:
+                                #print ('each_cell_parent : ', each_cell_parent.valor)
+                                filho.array[line_number][cell_number_son].valor = each_cell_parent.valor
+                                #print ('copied 1')
+                    filho.array = filho.array * 1
+            ##########   verificacao no console do mecanismo  #################################
+            Verifica_crossing_console = False
+            if Verifica_crossing_console :
+                lista = []
+                for each_individuo_in_chosen_number, each_individuo in enumerate( chosen):
+                    for numero_parente,each_element in enumerate (individuo_list):
+                        if each_individuo_in_chosen_number == numero_parente:
+                            print ('parente %d'  %(numero_parente))
+                            for line_number, each_line in enumerate (each_element.array):
+                                for cell_value, each_cell in enumerate (individuo_list[numero_parente].array[line_number]):
+                                    lista += [each_cell.valor]
+                                print (lista)
+                                lista = []
+                print ( 'filho'        )
+                for line_number,each_line in enumerate (filho.array):
+                    for cell_value, each_cell in enumerate (filho.array[line_number]):
+                        lista += [each_cell.valor]
+                    print (lista)
+                    lista = []
+            new_individuolist += [filho]
+            for each_individuo_number, each_individuo in enumerate (new_individuolist):
+                #print (each_individuo)
+                each_individuo.save_png("static/%s.png" %each_individuo_number)
+
+    return new_individuolist
 
 
 

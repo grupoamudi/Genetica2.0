@@ -33,9 +33,10 @@ def init_program():
     def crossing_over():
         global individuo_list
         individuo_list = test_png.crosser(vote_stash,individuo_list)
+        #emit('reload')
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(crossing_over, 'interval', seconds = 3)
+    scheduler.add_job(crossing_over, 'interval', seconds = 10)
     scheduler.start()
     pass
 

@@ -11,7 +11,7 @@ plot.ion()
 class individuo():
 
     # Evolutionnary Parameters
-    ind_size = 250;
+    ind_size = 50;
     mutation_steps = 50;
     max_heads_size = 5;
     direction_map_x = {'baixo': 1, 'cima': -1}
@@ -60,6 +60,7 @@ class individuo():
                     y_move = cadaponta.valory + y_test if (cadaponta.valory + y_test) < len(self.array) else 0
                     if y_move == -self.ind_size -1:
                         y_move = 0
+                    #print ('aaa')
                     self.array[cadaponta.valorx][y_move].mudavalor();
                     cadaponta.valory = y_move
                 else:
