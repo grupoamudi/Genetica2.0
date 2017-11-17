@@ -159,9 +159,10 @@ def crosser(vote_stash, individuo_list):
                     print (lista)
                     lista = []
             new_individuolist += [filho]
-            for each_individuo_number, each_individuo in enumerate (new_individuolist):
-                #print (each_individuo)
-                each_individuo.save_png("static/%s.png" %each_individuo_number)
+    for each_individuo_number, each_individuo in enumerate (new_individuolist):
+        #print (each_individuo)
+        print ('each_individuo_number : ', each_individuo_number )
+        each_individuo.save_png("static/%s.png" %each_individuo_number)
 
     return new_individuolist
 

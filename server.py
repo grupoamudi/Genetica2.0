@@ -36,7 +36,7 @@ def init_program():
         #emit('reload')
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(crossing_over, 'interval', seconds = 10)
+    scheduler.add_job(crossing_over, 'interval', seconds = 3)
     scheduler.start()
     pass
 
@@ -44,6 +44,7 @@ def init_program():
 @app.route('/')
 def index():
     return render_template('index.html')
+    ''' {{url_for('static', filename='0.png')}} '''
 
 
 @socketio.on('vote')
