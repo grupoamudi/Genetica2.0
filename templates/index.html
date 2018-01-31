@@ -18,6 +18,21 @@
         socket.on('reload', function () {
             location.reload();
         });
+		
+		function refreshImgs() {
+		
+		$('#ind0').attr("src", "..\\static\\0.png?" + Math.random().toString(36).slice(-5));
+		$('#ind1').attr("src", "..\\static\\1.png?" + Math.random().toString(36).slice(-5));
+		$('#ind2').attr("src", "..\\static\\2.png?" + Math.random().toString(36).slice(-5));
+		$('#ind3').attr("src", "..\\static\\3.png?" + Math.random().toString(36).slice(-5));
+		
+		console.log("rodou");
+		
+		} 
+		
+		$('document').ready(function(){
+		setInterval(refreshImgs, 1000);
+		});
     </script>
 </head>
 <body>
@@ -32,10 +47,10 @@
         <td>indivíduo 4</td>
     </tr>
     <tr>
-        <td><img src="..\static\0.png" width="200" height="200" alt="indivíduo 0 - gráfico"></td>
-        <td><img src="..\static\0.png" width="200" height="200" alt="indivíduo 1 - gráfico"></td>
-        <td><img src="..\static\0.png" width="200" height="200" alt="indivíduo 2 - gráfico"></td>
-        <td><img src="..\static\0.png" width="200" height="200" alt="indivíduo 3 - gráfico"></td>
+        <td><img id="ind0" src="..\static\0.png" width="200" height="200" alt="indivíduo 0 - gráfico"></td>
+        <td><img id="ind1" src="..\static\1.png" width="200" height="200" alt="indivíduo 1 - gráfico"></td>
+        <td><img id="ind2" src="..\static\2.png" width="200" height="200" alt="indivíduo 2 - gráfico"></td>
+        <td><img id="ind3" src="..\static\3.png" width="200" height="200" alt="indivíduo 3 - gráfico"></td>
     </tr>
     <tr>
         <td><button id="1" class="vote">Vote 1</button></td>
