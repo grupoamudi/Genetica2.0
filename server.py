@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, send_from_directory, url_for
+# -*- coding: utf-8 -*-
+from flask import Flask, render_template, request, send_from_directory, url_for, copy_current_request_context
 from flask_socketio import SocketIO, send, emit
 from apscheduler.schedulers.background import BackgroundScheduler
 import time
@@ -30,21 +31,23 @@ print(vote_stash)
 @app.before_first_request
 def init_program():
     #repeated function
+
     def crossing_over():
         global individuo_list
         individuo_list = test_png.crosser(vote_stash,individuo_list)
-        #emit('reload')
+        socketio.emit('update_generations')
 
     scheduler = BackgroundScheduler()
     scheduler.add_job(crossing_over, 'interval', seconds = 3)
     scheduler.start()
-    pass
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-    ''' {{url_for('static', filename='0.png')}} '''
+    global individuo_list
+    number_of_individuos = [i for (i,individuo) in enumerate(individuo_list)]
+
+    return render_template('index.html', individuo_list = number_of_individuos)
 
 
 @socketio.on('vote')
@@ -80,11 +83,9 @@ def handle_restarter():
     vote_stash = {};
     for i,individuo in enumerate(individuo_list):
         vote_stash[i+1] = 0;
-    print()
-    print()
-    print ("button reinitialize pressed")
-    print()
-    print()
+
+    print ("/n/n/nbutton reinitialize pressed/n/n/n")
+
     emit('reload', broadcast=True)
     pass
 
