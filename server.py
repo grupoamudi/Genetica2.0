@@ -38,7 +38,7 @@ def init_program():
         socketio.emit('update_generations')
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(crossing_over, 'interval', seconds = 3)
+    scheduler.add_job(crossing_over, 'interval', seconds = 5)
     scheduler.start()
 
 

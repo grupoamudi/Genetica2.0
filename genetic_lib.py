@@ -11,7 +11,7 @@ plot.ion()
 class individuo():
 
     # Evolutionnary Parameters
-    ind_size = 250;
+    ind_size = 25;
     mutation_steps = 50;
     max_heads_size = 5;
     direction_map_x = {'baixo': 1, 'cima': -1}
@@ -24,7 +24,6 @@ class individuo():
             self.generate()
 
     def mutate(self):
-
         # For each step
         for step in range(self.mutation_steps):
             # Verifica se criamos uma ponta aleatóriamente
