@@ -11,7 +11,7 @@ plot.ion()
 class individuo():
 
     # Evolutionnary Parameters
-    ind_size = 25;
+    ind_size = 50;
     mutation_steps = 50;
     max_heads_size = 5;
     direction_map_x = {'baixo': 1, 'cima': -1}

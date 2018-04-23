@@ -31,11 +31,18 @@ print(vote_stash)
 @app.before_first_request
 def init_program():
     #repeated function
+    def reset_vote_stash(vote_stash):
+        vote_stash[1] = 0
+        vote_stash[2] = 0
+        vote_stash[3] = 0
+        vote_stash[4] = 0
 
     def crossing_over():
         global individuo_list
         individuo_list = test_png.crosser(vote_stash,individuo_list)
         socketio.emit('update_generations')
+        reset_vote_stash(vote_stash)
+        socketio.emit('update_vote_number', vote_stash, broadcast=True)
 
     scheduler = BackgroundScheduler()
     scheduler.add_job(crossing_over, 'interval', seconds = 5)
@@ -92,9 +99,6 @@ def handle_restarter():
 if __name__ == '__main__':
     import thread, time
     import glob, os
-
-
-
     # Search
     # If not creates individuals
     # Start mutating at slow rate

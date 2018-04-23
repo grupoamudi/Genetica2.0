@@ -11,7 +11,7 @@ def crosser(vote_stash, individuo_list):
     semvoto = 0
     soma = 0
     real_chance_list = []
-    trigger_print = False
+    trigger_print = True
     # obtém de vote_stash os votos e cria uma vote_list utilizável #
     for i in vote_stash:
         vote_list += [vote_stash[i]]
@@ -19,11 +19,6 @@ def crosser(vote_stash, individuo_list):
     for i, vote_list_element in enumerate (vote_list):
         if vote_list_element != 0:
             semvoto = 1
-#
-#    for i in range(len(vote_list)):
-#        if vote_list[i] != 0 :
-#            semvoto = 1
-
     # se não houve votos #
     if semvoto == 0:
         total = len(vote_list)
@@ -160,7 +155,7 @@ def crosser(vote_stash, individuo_list):
                                     print (lista)
                                 lista = []
                 if trigger_print :
-                    print ( 'filho'        )
+                    print ( 'filho')
                 for line_number,each_line in enumerate (filho.array):
                     for cell_value, each_cell in enumerate (filho.array[line_number]):
                         lista += [each_cell.valor]
@@ -254,9 +249,6 @@ def square_filler (individuo_list):
             if blankline_left == False:
                 if individuo.array[foco[0] -1][foco[1] +0].valor == 1:
                     lista_de_celulas_em_torno_do_foco += [[foco[0] -1,foco[1] +0]]
-                #if individuo.array[foco[0] +0][foco[1] +0].valor == 1 and blank:
-                #    lista_de_celulas_em_torno_do_foco += [[foco[0] +0,foco[1] +0]]
-                #painted_cells_total -= 1
             lista_de_lista_de_celulas_em_torno_de_cada_foco += [lista_de_celulas_em_torno_do_foco]
         total_number_of_adjacents = 0
         for each_item_number, each_item in enumerate (lista_de_lista_de_celulas_em_torno_de_cada_foco):
@@ -278,18 +270,6 @@ def square_filler (individuo_list):
                     if line_number == each_foco[0]:
                         if col_number == each_foco[1]:
                             blank_matrix[line_number][col_number] += 5
-        ######### Analisar as colunas ############## - no final esta parte não fez nada
-    #    list_focus_in_line = []
-    #    for each_foco_index, each_foco in enumerate (lista_de_focos):
-    #        print ('lista_de_focos ' , lista_de_focos)
-    #        list_focus_in_line_carrier = []
-    #        for line_number in range (individuo.ind_size):
-    #            if each_foco[0] == line_number:
-    #                list_focus_in_line_carrier += [line_number,each_foco[1]]
-    #        list_focus_in_line += [list_focus_in_line_carrier]
-    #        print ('list_focus_in_line ' ,list_focus_in_line)
-    #        print ()
-#
 ############## Para as linhas ###################################
         for line_number in range (individuo.ind_size):
             same_line = []
@@ -324,39 +304,12 @@ def square_filler (individuo_list):
 ################## Aqui o programa já decidiu onde deve trocar o valor
 ################## O entorno das casas que contem 6 devem ser comparadas
 ################## Para ver se elas estão envoltas ou por 6 ou por 5, dot.
-
-        for line_number, line in enumerate (blank_matrix):
-            print (line)
-        print ()
+        if trigger_print :
+            for line_number, line in enumerate (blank_matrix):
+                print (line)
+            print ()
 
         change_together = []
-
-
-#        for line_number,line in enumerate (blank_matrix):
-#            for col_number,col in enumerate (line):
-#                change_together_carrier = []
-#                change_value = True
-#                if blank_matrix[line_number][col_number] == 6:
-############### automaticamente pelo o que foi escrito na função acima, não existem pontos que
-############### podem dar erro (estar na borda)
-###### No caso, é impossível ter um 0 ao lado
-#                    change_together_carrier += [[line_number,col_number]]
-#                    if blank_matrix[line_number][col_number-1] == 6:
-#                        change_together_carrier +=[[line_number,col_number-1]]
-#                    if blank_matrix[line_number+1][col_number] == 6:
-#                        change_together_carrier += [[line_number+1,col_number]]
-#                    if blank_matrix[line_number][col_number+1] == 6:
-#                        change_together_carrier += [[line_number,col_number+1]]
-#                    if blank_matrix[line_number-1][col_number] == 6:
-#                        change_together_carrier += [[line_number-1,col_number]]
-#                    print ('change_together_carrier ; ' , change_together_carrier)
-#                    #if times_ran > 1:
-#                    #      change_together_carrier = change_together[0:1]
-#                    if len(change_together_carrier) > 1:
-#                        change_together += [change_together_carrier]
-#
-#            print ('change_together ' , change_together)
-            #change_together =[]
         for i in range(individuo.ind_size):
             #print ()
             for line_number, line in enumerate (blank_matrix):
@@ -389,11 +342,6 @@ def square_filler (individuo_list):
                 if blank_matrix[line_number][col_number] == 6:
                     individuo.array[line_number][col_number].valor = 1
     return
-
-
-
-
-
 
 def generate_blank_to_fill (size,trigger_print):
     blank = []
@@ -453,16 +401,9 @@ def square_filler_old (individuo_list):
                 skip = False
                 teve_ao_lado = False
 ############################## check if foco is in the removed_cells list ###########################
-#                for checked_cell_number, compare_foco in enumerate (removed_from_checked_cells):
-#                    if foco == compare_foco:
-#                        invalido = True
 #####################################################################################################
                 print ('foco : ', foco)
                 print ('checked_cells : ',checked_cells)
-#                print ('foco[0] -1 : ',foco[0] -1)
-#                print ('foco[0] +1 : ',foco[0] +1)
-#                print ('foco[1] -1 : ',foco[1] -1)
-#                print ('foco[1] +1 : ',foco[1] +1)
                 if voltou_ao_inicial == False:
                     if foco[0] -1 == -1:
                         blankline_left = True
@@ -566,34 +507,6 @@ def square_filler_old (individuo_list):
                             print ('não tinha nenhuma pintada ao lado')
                     painted_cells -= 1
             print ('painted_cells : ', painted_cells)
-
-# a linha 190 causa que haja verificação de todas as células em cada indivíduo há como melhorar ?#
-####################### percebe se as células fechadas formam um conjunto fechado ########
-#    for painted_cell_number, each_painted_cell in enumerate(checked_cells):
-#        check_around(individuo_list[checked_cell)
-
-    #for individuo_number,individuo in enumerate(individuo_list):
-    #    for col_number, coluna in enumerate(individuo.array):
-    #        for line_number, linha in enumerate(individuo.array[col_number]):
-############# encontrou uma célula pintada -> checar células em volta ######################
-                #if linha.valor == 1:
-                    #if individuo.array[col_number -1][line_number -1].valor == 1 :
-                    #if individuo.array[col_number +0][line_number -1].valor == 1 :
-                    #if individuo.array[col_number +1][line_number -1].valor == 1 :
-                    #if individuo.array[col_number +1][line_number +0].valor == 1 :
-                    #if individuo.array[col_number +1][line_number +1].valor == 1 :
-                    #if individuo.array[col_number +0][line_number +1].valor == 1 :
-                    #if individuo.array[col_number -1][line_number +1].valor == 1 :
-                    #if individuo.array[col_number -1][line_number +0].valor == 1 :
-                    #if individuo.array[col_number +0][line_number +0].valor == 1 :
-
-
-                    #while painted_cells != 0 :
-                    #    painted_cells -= 1
-
-
-        #print (checked_cells)
-
     pass
 
 
