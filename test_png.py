@@ -47,7 +47,7 @@ def crosser(vote_stash, individuo_list):
         if cte_escolhe_o_que_vai_acontecer <= 1 :
             lista_do_que_fazer += ['extincao']
         else:
-            if cte_escolhe_o_que_vai_acontecer <= 95 :
+            if cte_escolhe_o_que_vai_acontecer <= 10 :
                 lista_do_que_fazer += ['mutar_sozinho']
             else:
                 if cte_escolhe_o_que_vai_acontecer <= 100 :
@@ -93,35 +93,43 @@ def crosser(vote_stash, individuo_list):
 
         if acao_a_executar == 'cruzar':
             chosen = []
-            pare = 0
+            #pare = 0
             ##########   dependendo da porcentagem da chance_list, ele gera números aleatórios e se for maior ele adiciona como escolhido   #####
-            while len(chosen) < 2:
-                for i, chance_list_element in enumerate (chance_list):
-                    chance_possibility = lib.random.randint(0,100)
-                    if chance_possibility < chance_list_element and pare == 0:
-                        chosen += [i]
-                        if len(chosen) == 2:
-                            pare = 1
-            if trigger_print :
-                print ('chosen list : ', chosen)
+            #while len(chosen) < 2:
+            #    for i, chance_list_element in enumerate (chance_list):
+            #        chance_possibility = lib.random.randint(0,100)
+            #        if chance_possibility < chance_list_element and pare == 0:
+            #            chosen += [i]
+            #            if len(chosen) == 2:
+            #                pare = 1
+            #if trigger_print :
+            #    print ('chosen list : ', chosen)
                 ################################   o cruzamento ############################
-
+            chosen += [numero_individuo]
+            possibility_value = lib.random.randint(0,100)
+            first_reach = 0
+            to_cruzar = 0
+            chance_sum = 0
+            print ("possibility_value : ", possibility_value)
+            for i, chance_list_element in enumerate(chance_list):
+                chance_sum += chance_list_element
+                if chance_sum >= possibility_value and first_reach == 0:
+                    first_reach = 1
+                    to_cruzar = i
+                print ("chance sum : ", chance_sum)
+            chosen += [to_cruzar]
+            print ("chosen : " , chosen)
             ###########   criacao do individuo resultante (filho) ###################
 
             filho = lib.individuo()
 
             ###########   probabilidade de passagem de genes   #####################
-
-            #probabilidade_crossing_pai = 50
-            #probabilidade_corssing_mae = 50
-
             chosen_number_0 = chosen[0]
             chosen_number_1 = chosen[1]
 
                 ###########   mecanismo de juncao entre os pais (cruzamento) ###########################
             lista = []
             for line_number,each_line in enumerate (filho.array):
-
                 chance_possibility_crossing = lib.random.randint(0,100)
                 if chance_possibility_crossing < 50 : #pega fileira de gene do pais
                     for cell_number_son, each_cell_son in enumerate (filho.array[line_number]):
