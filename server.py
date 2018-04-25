@@ -26,7 +26,10 @@ vote_stash = {};
 for i,individuo in enumerate(individuo_list):
     vote_stash[i+1] = 0;
 print(vote_stash)
-
+points_list = {}
+for i,individuo in enumerate(individuo_list):
+    points_list[i+1] = 0;
+print(points_list)
 
 @app.before_first_request
 def init_program():
@@ -38,10 +41,14 @@ def init_program():
         vote_stash[4] = 0
 
     def crossing_over():
-        global individuo_list
+        global individuo_list, points_list
         individuo_list = test_png.crosser(vote_stash,individuo_list)
+        for i,individuo in enumerate(individuo_list):
+            points_list[i+1] = test_png.point_counter(individuo)
+        print ("points_list : ", points_list)
         socketio.emit('update_generations')
         reset_vote_stash(vote_stash)
+        socketio.emit('update_points_number', points_list, broadcast=True)
         socketio.emit('update_vote_number', vote_stash, broadcast=True)
 
     scheduler = BackgroundScheduler()

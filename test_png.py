@@ -3,6 +3,9 @@ import genetic_lib as lib
 once = True
 
 def crosser(vote_stash, individuo_list):
+    for i, individuo in enumerate (individuo_list):
+        point_counter (individuo)
+
     new_individuolist = []
     ########   Gera as chances de mutação     #############
     vote_list = []
@@ -11,8 +14,8 @@ def crosser(vote_stash, individuo_list):
     semvoto = 0
     soma = 0
     real_chance_list = []
-    trigger_print = True
-    # obtém de vote_stash os votos e cria uma vote_list utilizável #
+    trigger_print = False
+    # obtém de vote_stash o/s votos e cria uma vote_list utilizável #
     for i in vote_stash:
         vote_list += [vote_stash[i]]
     # determina se houve votos válidos #
@@ -47,7 +50,7 @@ def crosser(vote_stash, individuo_list):
         if cte_escolhe_o_que_vai_acontecer <= 1 :
             lista_do_que_fazer += ['extincao']
         else:
-            if cte_escolhe_o_que_vai_acontecer <= 10 :
+            if cte_escolhe_o_que_vai_acontecer <= 85     :
                 lista_do_que_fazer += ['mutar_sozinho']
             else:
                 if cte_escolhe_o_que_vai_acontecer <= 100 :
@@ -110,17 +113,26 @@ def crosser(vote_stash, individuo_list):
             first_reach = 0
             to_cruzar = 0
             chance_sum = 0
-            print ("possibility_value : ", possibility_value)
+            if trigger_print :
+                print ("possibility_value : ", possibility_value)
             for i, chance_list_element in enumerate(chance_list):
                 chance_sum += chance_list_element
                 if chance_sum >= possibility_value and first_reach == 0:
                     first_reach = 1
                     to_cruzar = i
-                print ("chance sum : ", chance_sum)
+                if trigger_print :
+                    print ("chance sum : ", chance_sum)
             chosen += [to_cruzar]
-            print ("chosen : " , chosen)
-            ###########   criacao do individuo resultante (filho) ###################
+            if trigger_print:
+                print ("chosen : " , chosen)
+            ############  Pontuacao inicial                ############################
+            points_before = [point_counter (individuo_list[numero_individuo]),point_counter(individuo_list[to_cruzar])]
+            #print ("points_before : " ,points_before)
+            max_points_before = (points_before[0] + points_before[1])/2
 
+            points_after = 0
+            print ("max : " , max_points_before)
+            ###########   criacao do individuo resultante (filho) ###################
             filho = lib.individuo()
 
             ###########   probabilidade de passagem de genes   #####################
@@ -128,25 +140,28 @@ def crosser(vote_stash, individuo_list):
             chosen_number_1 = chosen[1]
 
                 ###########   mecanismo de juncao entre os pais (cruzamento) ###########################
-            lista = []
-            for line_number,each_line in enumerate (filho.array):
-                chance_possibility_crossing = lib.random.randint(0,100)
-                if chance_possibility_crossing < 50 : #pega fileira de gene do pais
-                    for cell_number_son, each_cell_son in enumerate (filho.array[line_number]):
-                        for cell_number_parent, each_cell_parent in enumerate (individuo_list[chosen_number_0].array[line_number]):
-                            if cell_number_son == cell_number_parent:
-                                #print ('each_cell_parent : ', each_cell_parent.valor)
-                                filho.array[line_number][cell_number_son].valor = each_cell_parent.valor
-                                #print ('copied 0')
-                    filho.array = filho.array * 1
-                elif chance_possibility_crossing < 100 : #pega fileira de gene do pais
-                    for cell_number_son, each_cell_son in enumerate (filho.array[line_number]):
-                        for cell_number_parent, each_cell_parent in enumerate (individuo_list[chosen_number_1].array[line_number]):
-                            if cell_number_son == cell_number_parent:
-                                #print ('each_cell_parent : ', each_cell_parent.valor)
-                                filho.array[line_number][cell_number_son].valor = each_cell_parent.valor
-                                #print ('copied 1')
-                    filho.array = filho.array * 1
+            while points_after <  max_points_before :
+                lista = []
+                for line_number,each_line in enumerate (filho.array):
+                    chance_possibility_crossing = lib.random.randint(0,100)
+                    if chance_possibility_crossing < 50 : #pega fileira de gene do pais
+                        for cell_number_son, each_cell_son in enumerate (filho.array[line_number]):
+                            for cell_number_parent, each_cell_parent in enumerate (individuo_list[chosen_number_0].array[line_number]):
+                                if cell_number_son == cell_number_parent:
+                                    #print ('each_cell_parent : ', each_cell_parent.valor)
+                                    filho.array[line_number][cell_number_son].valor = each_cell_parent.valor
+                                    #print ('copied 0')
+                        filho.array = filho.array * 1
+                    elif chance_possibility_crossing < 100 : #pega fileira de gene do pais
+                        for cell_number_son, each_cell_son in enumerate (filho.array[line_number]):
+                            for cell_number_parent, each_cell_parent in enumerate (individuo_list[chosen_number_1].array[line_number]):
+                                if cell_number_son == cell_number_parent:
+                                    #print ('each_cell_parent : ', each_cell_parent.valor)
+                                    filho.array[line_number][cell_number_son].valor = each_cell_parent.valor
+                                    #print ('copied 1')
+                        filho.array = filho.array * 1
+                points_after = point_counter(filho)
+                print ('points_after : ', points_after)
             ##########   verificacao no console do mecanismo  #################################
             Verifica_crossing_console = False
             if Verifica_crossing_console :
@@ -179,10 +194,51 @@ def crosser(vote_stash, individuo_list):
 
     square_filler (individuo_list)
     return new_individuolist
-
-
-
-
+##############################################################################################################
+def point_counter (individuo):
+    points = 0
+    for line_number,each_line in enumerate (individuo.array):
+        for cell_value, each_cell in enumerate (each_line):
+            blankline_left = False
+            blankline_right = False
+            blankline_top = False
+            blankline_bottom = False
+            foco = (line_number,cell_value)
+            if foco[0] -1 == -1:
+                blankline_left = True
+            if foco[0] +1 == individuo.ind_size:
+                blankline_right = True
+            if foco[1] -1 == -1 :
+                blankline_top = True
+            if foco[1] +1 == individuo.ind_size:
+                blankline_bottom = True
+            if each_cell.valor == 1:
+                if blankline_left == False and blankline_top == False:
+                    if individuo.array[foco[0] -1][foco[1] -1].valor == 1:
+                        points += 1
+                if blankline_top == False:
+                    if individuo.array[foco[0] +0][foco[1] -1].valor == 1:
+                        points += 1
+                if blankline_right == False and blankline_top == False:
+                    if individuo.array[foco[0] +1][foco[1] -1].valor == 1:
+                        points += 1
+                if blankline_right == False:
+                    if individuo.array[foco[0] +1][foco[1] +0].valor == 1:
+                        points += 1
+                if blankline_right == False and blankline_bottom == False:
+                    if individuo.array[foco[0] +1][foco[1] +1].valor == 1:
+                        points += 1
+                if blankline_bottom == False:
+                    if individuo.array[foco[0] +0][foco[1] +1].valor == 1:
+                        points += 1
+                if blankline_bottom == False and blankline_left == False:
+                    if individuo.array[foco[0] -1][foco[1] +1].valor == 1:
+                        points += 1
+                if blankline_left == False:
+                    if individuo.array[foco[0] -1][foco[1] +0].valor == 1:
+                        points += 1
+    #print ("points : " , points)
+    return points
 
 #############################################################################################################
 def square_filler (individuo_list):

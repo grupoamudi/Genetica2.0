@@ -70,6 +70,9 @@
             <div class="row justify-content-center mt-3 align-items-center">
                 <button id="{{ individuo + 1 }}" class="vote btn btn-secondary col-sm-6">Vote {{ individuo + 1 }}</button><span  class="pl-2 vote_number" id="vote_number-{{ individuo + 1 }}">0</span>
             </div>
+            <div class="row justify-content-center mt-3 align-items-center">
+                <h2 id="points_{{ individuo + 1 }}" class="points btn btn-info col-sm-6">Pontos : {{ individuo + 1 }}<class="pl-2 points" id="points-{{ individuo + 1 }}">0</h2>
+            </div>
         </div>
         {% endfor %}
 
@@ -93,6 +96,12 @@
     socket.on('update_vote_number', function(recieved_data) {
         $.each(recieved_data, function(i, item) {
             $("#vote_number-"+(i)).text(item);
+
+        })
+    });
+    socket.on('update_points_number', function(recieved_data) {
+        $.each(recieved_data, function(i, item) {
+            $("#points-"+(i)).text(item);
 
         })
     });
