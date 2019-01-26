@@ -40,7 +40,7 @@ This project is open for contributions.
 
 To submit a contribution, please fork the repository and submit a Pull Request with your changes. In each commit, please follow the default git commit messages.
 
-Don't forget to [configure your remote for](https://help.github.com/articles/configuring-a-remote-for-a-fork/) and also [sync it with the upstream repository](https://help.github.com/articles/syncing-a-fork/).
+Don't forget to [configure your remote forked repository](https://help.github.com/articles/configuring-a-remote-for-a-fork/) and also [sync it with the upstream repository](https://help.github.com/articles/syncing-a-fork/).
 
 We also suggest creating a separate branch for each different feature under development.
 
