@@ -1,27 +1,145 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Amudi Genética</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        alert('hello');
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('connect', function() {
-            socket.emit('my event', {data: 'I\'m connected!'});
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    <style>
+    .borda{width:30px; height:30px;
+           padding:5px; border:4px solid black;
+         }
+
+      .vote_number {
+          background-color: #fddd69;
+          padding: .45rem;
+          margin-left: -0.2rem;
+          border-radius: 0 5px 5px 0;
+          font-family: 'Dosis', sans-serif;
+      }
+
+      .font-dosis {
+          font-family: 'Dosis', sans-serif;
+      }
+
+      .title {
+          margin-top: 3rem;
+          font-size: 4rem;
+      }
+
+      .ind {
+
+      }
+
+      .subtitle {
+          margin-left: 5rem;
+          margin-bottom: 1rem;
+      }
+       /*
+
+       // Se quiser colocar um background maneiro. Descomentar.
+       html {
+        width: 100vw;
+        height: 100vh;
+
+        background: url(https://source.unsplash.com/collection/244339) no-repeat center fixed;
+        background-size: cover;
+      } */
+
+    </style>
 </head>
 <body>
-    <h1>HELLO WORLD</h1>
+  <div class="container ">
+      <h1 class="text-center font-dosis title">Amudi Genética</h1>
+      <div class="row justify-content-center">
+          <p class="col-sm-6 text-justify">
+              Amudi genética é uma obra sobre evolução. Aqui, você e as pessoas de qualquer parte do mundo podem votar no seu individuo favorito.
+              Com o tempo, eles vão se modificando, evoluíndo e mudando sob a sua influência e das outras pessoas. Você controla o destino.
+          </p>
+      </div>
 
-    <div id="graphs">
-    {#
-        {% for item in navigation %}
-            <div><a href="{{ item.href }}">{{ item.caption }}</a></div>
+      <h2 class="font-dosis subtitle">Escolha seu individuo</h2>
+      <div class="ind_container row">
+        {% for individuo in individuo_list %}
+        <div class="ind_holder{{ individuo }} col-sm ">
+            <div class="row justify-content-center">
+                <img id="ind{{ individuo }}" class="" src="..\static\{{ individuo }}.png" width="200" height="200" alt="indivíduo {{ individuo }}">
+            </div>
+            <div class="row justify-content-center mt-3 align-items-center">
+                <button id="{{ individuo + 1 }}" class="vote btn btn-secondary col-sm-6">Vote {{ individuo + 1 }}</button><span  class="pl-2 vote_number" id="vote_number-{{ individuo + 1 }}">0</span>
+            </div>
+            <div class="row justify-content-center mt-3 align-items-center">
+                <h2 id="points_{{ individuo + 1 }}" class="points btn btn-info col-sm-6">Pontos : {{ individuo + 1 }}<class="pl-2 points" id="points-{{ individuo + 1 }}">0</h2>
+            </div>
+        </div>
         {% endfor %}
-    #}
 
-    GRAPHS!
     </div>
+
+
+
+    <div style="text-align:center" id="couter">
+    <h4 align="left">Votos computados</h3>
+    <p class=borda id="vote_counter">0</p>
+  </div>
+</div>
+
+<script>
+
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('connect', function() {
+        socket.emit('my event', {data: 'I\'m connected!'});
+    });
+
+    socket.on('update_vote_number', function(recieved_data) {
+        $.each(recieved_data, function(i, item) {
+            $("#vote_number-"+(i)).text(item);
+
+        })
+    });
+    socket.on('update_points_number', function(recieved_data) {
+        $.each(recieved_data, function(i, item) {
+            $("#points-"+(i)).text(item);
+
+        })
+    });
+    socket.on('reload', function () {
+        location.reload();
+    });
+    socket.on('update_generations', function () {
+        refreshImgs();
+    });
+
+    function refreshImgs() {
+        $('#ind0').attr("src", "..\\static\\0.png?" + Math.random().toString(36).slice(-5));
+        $('#ind1').attr("src", "..\\static\\1.png?" + Math.random().toString(36).slice(-5));
+        $('#ind2').attr("src", "..\\static\\2.png?" + Math.random().toString(36).slice(-5));
+        $('#ind3').attr("src", "..\\static\\3.png?" + Math.random().toString(36).slice(-5));
+    }
+
+  $(document).ready( function () {
+      $('.vote').click(function () {
+          funcaovoto($(this).attr('id'));
+      })
+
+      $('.restarter').click(function(){
+            funcaoreinicia();
+      })
+  })
+
+  function funcaovoto(a){
+       socket.emit('vote',{'chosen_candidate': a})
+  }
+
+   function funcaoreinicia(){
+    socket.emit('restarter')
+  }
+</script>
+
+  <div>
+     <p><button id="restarter" class="restarter"> Aperte para reiniciar</button></p>
+   </div>
 </body>
 </html>

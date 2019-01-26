@@ -7,6 +7,8 @@ from matplotlib import colors as colors
 
 plot.ion()
 
+#TODO: Detectei algum bug ao deixar ele rodando por um tempo. "list index out of range" para a função mutate (linha 53) para a chamada da linha 231.
+
 class individuo():
 
     ind_size = 100;
