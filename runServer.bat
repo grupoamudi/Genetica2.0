@@ -1,2 +1,3 @@
 set FLASK_APP=server.py
-flask run
+set FLASK_DEBUG=1
+python -m flask run

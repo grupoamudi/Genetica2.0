@@ -10,6 +10,7 @@ import random
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'weoijhgsdlkjfwelkr20943091d98asokolfqeoi"!!?qw?sda/~dwqp1deo'
 socketio = SocketIO(app)
+job = None
 
 clients = []
 #individuos = ["1", "2", "3", "4"]
@@ -48,11 +49,12 @@ def init_program():
         print ("points_list : ", points_list)
         socketio.emit('update_generations')
         reset_vote_stash(vote_stash)
+        socketio.emit('next_iteration', str(job.next_run_time))
         socketio.emit('update_points_number', points_list, broadcast=True)
         socketio.emit('update_vote_number', vote_stash, broadcast=True)
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(crossing_over, 'interval', seconds = 5)
+    job = scheduler.add_job(crossing_over, 'interval', seconds = 5)
     scheduler.start()
 
 
@@ -60,8 +62,10 @@ def init_program():
 def index():
     global individuo_list
     number_of_individuos = [i for (i,individuo) in enumerate(individuo_list)]
+    douplets = zip(number_of_individuos, number_of_individuos[1:])
+    selected_douplets = [par for (i,par) in enumerate(douplets) if i % 2 == 0]
 
-    return render_template('index.html', individuo_list = number_of_individuos)
+    return render_template('index.html', individuo_list = selected_douplets)
 
 
 @socketio.on('vote')

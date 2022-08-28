@@ -2,3 +2,5 @@ pypng
 flask
 flask-socketio
 apscheduler
+numpy
+matplotlib
